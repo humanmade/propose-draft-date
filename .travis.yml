@@ -12,3 +12,6 @@ cache:
   timeout: 1000
   directories:
     - vendor
+
+script:
+  - npm test

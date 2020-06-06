@@ -76,6 +76,11 @@ function get_proposed_date( $post ) : ?string {
  */
 function register_meta(): void {
 	$default_post_types = [ 'post', 'page' ];
+	/**
+	 * Filter post types supporting the proposed date feature.
+	 *
+	 * @param array $post_types Array of post types supporting proposed dates. Defaults to "post" and "page".
+	 */
 	$supported_post_types = apply_filters( 'proposed_date_supported_post_types', $default_post_types );
 	foreach ( $supported_post_types as $post_type ) {
 		register_post_meta(

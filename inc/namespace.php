@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate;
 
+use WP_Post;
+
 /**
  * Connect namespace functions to actions & hooks.
  */
@@ -16,6 +18,7 @@ function setup() : void {
 	add_filter( 'get_the_date', __NAMESPACE__ . '\\filter_get_the_date', 10, 3 );
 	add_filter( 'the_date', __NAMESPACE__ . '\\filter_the_date', 10, 2 );
 	add_filter( 'get_post_time', __NAMESPACE__ . '\\filter_get_post_time', 10, 2 );
+	add_action( 'transition_post_status', __NAMESPACE__ . '\\promote_proposed_date_on_publish' );
 }
 
 /**
@@ -63,4 +66,48 @@ function filter_the_date( $the_date, $format ) : string {
  */
 function filter_get_post_time( $time, $format ) : string {
 	return filter_get_the_date( $time, $format, get_post() );
+}
+
+/**
+ * If a post with a proposed date is published, conditionally promote the
+ * proposed date to be the actual date of the post.
+ *
+ * @param string $new_status New post status.
+ * @param string $old_status Previous post status.
+ * @param WP_Post $post
+ *
+ * @return void
+ */
+function promote_proposed_date_on_publish( string $new_status, string $old_status, WP_Post $post ) : void {
+	// Heuristic check to determine if a post is becoming scheduled in some way.
+	$accept_proposal = (
+		! in_array( $old_status, [ 'publish', 'private', 'future' ], true )
+	) && (
+		in_array( $new_status, [ 'publish', 'private', 'future' ], true )
+	);
+
+	/**
+	 * Filter whether a proposed date should be applied to a transitioning post
+	 * if a date proposal is available.
+	 *
+	 * @param bool    $accept_proposal Whether, given the situation, a proposal should be accepted.
+   * @param string  $new_status      New post status.
+   * @param string  $old_status      Previous post status.
+	 * @param WP_Post $post            The post being transitioned.
+	 */
+	$accept_proposal = apply_filters( 'proposed_date_should_apply_proposal', $accept_proposal, $new_status, $old_status, $post );
+
+	if ( ! $accept_proposal ) {
+		return;
+	}
+
+	$proposed_date = Meta\get_proposed_date( $post );
+	if ( empty( $proposed_date ) ) {
+		return;
+	}
+
+	// Apply the proposed date to the post.
+
+	// Remove meta from updated post.
+	delete_post_meta( $post->ID, Meta\PROPOSED_DATE_META_KEY );
 }

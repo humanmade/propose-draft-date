@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-// Composer autoloader must be loaded before WP_PHPUNIT__DIR will be available
+// Composer autoloader must be loaded before WP_PHPUNIT__DIR will be available.
 require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
 // Give access to tests_add_filter() function.

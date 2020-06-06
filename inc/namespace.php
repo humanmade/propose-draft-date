@@ -9,8 +9,9 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate;
 
-use DateTimeZone;
-
+/**
+ * Connect namespace functions to actions & hooks.
+ */
 function setup() : void {
 	add_filter( 'get_the_date', __NAMESPACE__ . '\\filter_get_the_date', 10, 3 );
 	add_filter( 'the_date', __NAMESPACE__ . '\\filter_the_date', 10, 2 );

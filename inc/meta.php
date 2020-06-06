@@ -9,8 +9,6 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate\Meta;
 
-use WP_Post;
-
 const PROPOSED_DATE_META_KEY = 'proposed_publish_date';
 
 /**

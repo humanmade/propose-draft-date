@@ -100,7 +100,7 @@ function register_asset( string $manifest_path, string $target_asset, array $opt
 
 	if ( empty( $asset_uri ) ) {
 		// TODO: Consider warning in the console if the asset could not be found.
-		// (Failure should be allowed for CSS files; they are not exported in dev.)
+		// (Failure should be allowed for CSS files; they are not exported in dev).
 		return;
 	}
 

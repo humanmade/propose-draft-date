@@ -57,6 +57,8 @@ class Test_Meta extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the sanitize_proposed_date function with a variety of inputs.
+	 *
 	 * @dataProvider data_sanitize_proposed_date
 	 *
 	 * @param string $input    The incoming meta value to sanitize.
@@ -81,7 +83,7 @@ class Test_Meta extends WP_UnitTestCase {
 		return [
 			[ 'Diamonds on the soles of her shoes', '' ],
 			[ '2020-06-06T10:17:34', '2020-06-06 10:17:34' ],
-			[ "2020-06-06 %%%ABABAB 10:25:56 %A%A%ABBB", '2020-06-06 10:25:56' ],
+			[ '2020-06-06 %%%ABABAB 10:25:56 %A%A%ABBB', '2020-06-06 10:25:56' ],
 		];
 	}
 

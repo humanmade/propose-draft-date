@@ -40,18 +40,11 @@ function enqueue_block_editor_assets() : void {
 		[
 			'handle'  => EDITOR_BUNDLE_HANDLE,
 			'scripts' => [
-				'wp-blocks',
 				'wp-components',
-				'wp-compose',
+				'wp-i18n',
+				'wp-date',
 				'wp-data',
 				'wp-edit-post',
-				'wp-editor',
-				'wp-element',
-				'wp-i18n',
-				'wp-plugins',
-				'wp-rich-text',
-				'wp-shortcode',
-				'wp-url',
 			],
 		]
 	);

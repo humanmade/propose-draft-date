@@ -22,7 +22,7 @@
     "lint:php": "composer run-script lint",
     "lint:php:fix": "composer run-script lint:fix",
     "lint": "npm-run-all lint:*",
-    "test:php": "composer run-script phpunit",
+    "test:php": "docker run --rm -v \"$PWD:/code\" humanmade/plugin-tester",
     "test:js": "jest",
     "test:js:watch": "jest --watch",
     "test:js:coverage": "jest --coverage",

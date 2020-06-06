@@ -17,15 +17,6 @@ use WP_UnitTestCase;
  */
 class Test_Meta extends WP_UnitTestCase {
 	/**
-	 * Cleanup after tests.
-	 *
-	 * @todo: Is this necessary?
-	 */
-	public function tearDown() : void {
-		unset( $GLOBALS['post'] );
-	}
-
-	/**
 	 * Set the current WordPress user to a new user of a specific role.
 	 *
 	 * @param string $role The role to use for the current user.
@@ -68,20 +59,18 @@ class Test_Meta extends WP_UnitTestCase {
 	}
 
 	public function test_sanitize_unsanitary_string() : void {
-		$sanitized = Meta\sanitize_proposed_date( "2020-06\t-06 %%%ABABAB 10:25:56 %A%A%ABBB" );
+		$sanitized = Meta\sanitize_proposed_date( "2020-06-06 %%%ABABAB 10:25:56 %A%A%ABBB" );
 		$this->assertEquals( '2020-06-06 10:25:56', $sanitized );
 	}
 
 	public function test_get_proposed_date_no_meta_set() : void {
 		$post_id = self::factory()->post->create();
-		$GLOBALS['post'] = get_post( $post_id );
 		$date = Meta\get_proposed_date( $post_id );
 		$this->assertNull( $date );
 	}
 
 	public function test_get_proposed_date_empty_string_set() : void {
 		$post_id = self::factory()->post->create();
-		$GLOBALS['post'] = get_post( $post_id );
 		update_post_meta( $post_id, Meta\PROPOSED_DATE_META_KEY, '' );
 		$date = Meta\get_proposed_date( $post_id );
 		$this->assertNull( $date );
@@ -89,7 +78,6 @@ class Test_Meta extends WP_UnitTestCase {
 
 	public function test_get_proposed_date_meta() : void {
 		$post_id = self::factory()->post->create();
-		$GLOBALS['post'] = get_post( $post_id );
 		$this->assertInternalType(
 			'integer',
 			update_post_meta( $post_id, Meta\PROPOSED_DATE_META_KEY, '2020-06-06 10:47' )

@@ -1,6 +1,6 @@
 <?php
 /**
- * Define plugin-managed meta values.
+ * Register, get and set the meta value for storing proposed date string.
  *
  * @package propose-draft-date
  */
@@ -11,11 +11,13 @@ namespace ProposeDraftDate\Meta;
 
 use WP_Post;
 
+const PROPOSED_DATE_META_KEY = 'proposed_publish_date';
+
 /**
  * Connect namespace functions to actions & hooks.
  */
 function setup() : void {
-		add_action( 'init', __NAMESPACE__ . '\\register_meta' );
+	add_action( 'init', __NAMESPACE__ . '\\register_meta' );
 }
 
 /**
@@ -29,21 +31,21 @@ function allow_proposed_date() : bool {
 }
 
 /**
- * Sanitize a string and cast it to a UTC date, or return an empty string if
- * it cannot be parsed as a date string.
+ * Sanitize a string and cast it to a date, or return an empty string if it
+ * cannot be parsed as a date string.
  *
  * @param string $input Incoming unsanitized meta value.
  *
- * @return string UTC date string, or empty string.
+ * @return string MySQL-format date string, or empty string.
  */
 function sanitize_proposed_date( string $input ) : string {
-	$input = trim( sanitize_text_field( $input ) );
+	$date_data = rest_get_date_with_gmt( trim( sanitize_text_field( $input ) ) );
 
-	if ( empty( $input ) ) {
+	if ( empty( $date_data ) ) {
 		return '';
 	}
 
-	return get_gmt_from_date( $input );
+	return $date_data[0];
 }
 
 /**
@@ -61,7 +63,7 @@ function get_proposed_date( $post ) : ?string {
 	}
 
 	$post_id = $post->ID ?? $post;
-	$proposed_date = (string) get_post_meta( $post_id, 'proposed_publish_date', true );
+	$proposed_date = (string) get_post_meta( $post_id, PROPOSED_DATE_META_KEY, true );
 
 	if ( empty( trim( $proposed_date ) ) ) {
 		return null;
@@ -79,14 +81,14 @@ function register_meta(): void {
 	foreach ( $supported_post_types as $post_type ) {
 		register_post_meta(
 			$post_type,
-			'proposed_publish_date',
+			PROPOSED_DATE_META_KEY,
 			[
-				'description' => __( 'A proposed date on which to publish a post type object.', 'propose-draft-date' ),
-				'single' => true,
-				'type' => 'string',
-				'show_in_rest' => true,
+				'description'       => __( 'A proposed date on which to publish a post type object.', 'propose-draft-date' ),
+				'single'            => true,
+				'type'              => 'string',
+				'show_in_rest'      => true,
 				'sanitize_callback' => __NAMESPACE__ . '\\sanitize_proposed_date',
-				'auth_callback' => __NAMESPACE__ . '\\allow_proposed_date',
+				'auth_callback'     => __NAMESPACE__ . '\\allow_proposed_date',
 			]
 		);
 	}

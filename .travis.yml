@@ -1,22 +1,14 @@
 services:
   - docker
 
-node_js:
-  - 'lts/*'
-  - 'node'
-
 before_script:
   - composer install
-  - npm ci
+
+script:
+  - composer run-script lint
+  - docker run --rm -v "$PWD:/code" humanmade/plugin-tester
 
 cache:
   timeout: 1000
-  npm: true
   directories:
     - vendor
-
-script:
-  - npm run lint:js
-  - npm run lint:php
-  - docker run --rm -v "$PWD:/code" humanmade/plugin-tester
-  - npm run test:js

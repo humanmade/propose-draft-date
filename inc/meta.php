@@ -58,7 +58,7 @@ function sanitize_proposed_date( string $input ) : string {
  * @return string|null The proposed date, or null if it is irrelevant or unavailable.
  */
 function get_proposed_date( $post ) : ?string {
-	if ( in_array( $post->post_status, [ 'publish', 'future' ], true ) ) {
+	if ( in_array( get_post_status( $post ), [ 'publish', 'future' ], true ) ) {
 		return null;
 	}
 

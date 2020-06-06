@@ -7,7 +7,14 @@
 		<exclude name="HM.Files.FunctionFileName.WrongFile" />
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
 	</rule>
+
+	<!-- Permit tests to omit function comments.-->
 	<rule ref="Squiz.Commenting.FunctionComment.Missing">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
+	<!-- Permit tests to align data provider arrays for readability. -->
+	<rule ref="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
 </ruleset>

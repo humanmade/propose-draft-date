@@ -11,8 +11,12 @@ before_script:
 
 cache:
   timeout: 1000
+  npm: true
   directories:
     - vendor
 
 script:
-  - npm test
+  - npm run lint:js
+  - npm run lint:php
+  - docker run --rm -v "$PWD:/code" humanmade/plugin-tester
+  - npm run test:js

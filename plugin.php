@@ -19,3 +19,7 @@ Meta\setup();
 require_once __DIR__ . '/inc/asset-loader.php';
 require_once __DIR__ . '/inc/scripts.php';
 Scripts\setup();
+
+//Set up the meta-to-date handoff logic.
+require_once __DIR__ . '/inc/namespace.php';
+setup();

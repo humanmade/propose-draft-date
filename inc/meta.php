@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate\Meta;
 
+use WP_Post;
+
 /**
  * Connect namespace functions to actions & hooks.
  */
@@ -22,7 +24,7 @@ function setup() : void {
  *
  * @return bool Whether the current user can set the proposed date meta value.
  */
-function propose_date_auth_callback() : bool {
+function allow_proposed_date() : bool {
 	return current_user_can( 'edit_posts' );
 }
 
@@ -34,7 +36,7 @@ function propose_date_auth_callback() : bool {
  *
  * @return string UTC date string, or empty string.
  */
-function sanitize_date_string( string $input ) : string {
+function sanitize_proposed_date( string $input ) : string {
 	$input = trim( sanitize_text_field( $input ) );
 
 	if ( empty( $input ) ) {
@@ -42,6 +44,30 @@ function sanitize_date_string( string $input ) : string {
 	}
 
 	return get_gmt_from_date( $input );
+}
+
+/**
+ * Helper function to get the proposed date for a given post.
+ *
+ * Returns null if post is scheduled or published, or if no date has been proposed.
+ *
+ * @param int|WP_Post $post The post object or ID for which to get the proposed date.
+ *
+ * @return string|null The proposed date, or null if it is irrelevant or unavailable.
+ */
+function get_proposed_date( $post ) : ?string {
+	if ( in_array( $post->post_status, [ 'publish', 'future' ], true ) ) {
+		return null;
+	}
+
+	$post_id = $post->ID ?? $post;
+	$proposed_date = (string) get_post_meta( $post_id, 'proposed_publish_date', true );
+
+	if ( empty( trim( $proposed_date ) ) ) {
+		return null;
+	}
+
+	return $proposed_date;
 }
 
 /**
@@ -59,8 +85,8 @@ function register_meta(): void {
 				'single' => true,
 				'type' => 'string',
 				'show_in_rest' => true,
-				'sanitize_callback' => __NAMESPACE__ . '\\sanitize_date_string',
-				'auth_callback' => __NAMESPACE__ . '\\propose_date_auth_callback',
+				'sanitize_callback' => __NAMESPACE__ . '\\sanitize_proposed_date',
+				'auth_callback' => __NAMESPACE__ . '\\allow_proposed_date',
 			]
 		);
 	}

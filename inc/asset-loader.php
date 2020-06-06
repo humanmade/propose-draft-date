@@ -98,8 +98,6 @@ function register_asset( string $manifest_path, string $target_asset, array $opt
 
 	$asset_uri = get_manifest_resource( $manifest_path, $target_asset );
 
-	error_log( 'asset uri: ' . (string) $asset_uri );
-
 	if ( empty( $asset_uri ) ) {
 		// TODO: Consider warning in the console if the asset could not be found.
 		// (Failure should be allowed for CSS files; they are not exported in dev.)
@@ -110,8 +108,6 @@ function register_asset( string $manifest_path, string $target_asset, array $opt
 	if ( strpos( $asset_uri, '//' ) === false ) {
 		$asset_uri = trailingslashit( plugin_dir_url( __DIR__ ) ) . $asset_uri;
 	}
-
-	error_log( $asset_uri );
 
 	if ( is_css( $asset_uri ) ) {
 		wp_register_style(

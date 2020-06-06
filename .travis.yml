@@ -1,6 +1,10 @@
 services:
   - docker
 
+node_js:
+  - 'lts/*'
+  - 'node'
+
 before_script:
   - composer install
 
@@ -8,6 +12,3 @@ cache:
   timeout: 1000
   directories:
     - vendor
-
-script:
-  - docker run --rm -v "$PWD:/code" humanmade/plugin-tester

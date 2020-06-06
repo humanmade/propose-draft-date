@@ -63,6 +63,7 @@ function get_proposed_date( $post ) : ?string {
 	}
 
 	$post_id = $post->ID ?? $post;
+	// return (string) $post_id;
 	$proposed_date = (string) get_post_meta( $post_id, PROPOSED_DATE_META_KEY, true );
 
 	if ( empty( trim( $proposed_date ) ) ) {

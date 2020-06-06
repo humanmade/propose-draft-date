@@ -9,20 +9,12 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate\Tests\Inc;
 
-use WP_Mock;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Verify the test suite is running properly.
  */
-class Test_Test_Suite extends WP_Mock\Tools\TestCase {
-	public function setUp() : void {
-		WP_Mock::setUp();
-	}
-
-	public function tearDown() : void {
-		WP_Mock::tearDown();
-	}
-
+class Test_Test_Suite extends TestCase {
 	public function testTestsAreRunning() : void {
 		$this->assertTrue( true );
 	}

@@ -1,0 +1,10 @@
+*.log
+.phpunit.result.cache
+node_modules
+build
+vendor
+.cache
+coverage
+package-lock.json
+composer.lock
+yarn.lock

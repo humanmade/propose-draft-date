@@ -1,0 +1,4 @@
+**/build/
+**/vendor/
+!.eslintrc.js
+!jest.config.js

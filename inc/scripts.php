@@ -1,7 +1,10 @@
 <?php
 /**
  * Register editor JS script.
+ *
+ * @package propose-draft-date
  */
+
 declare( strict_types=1 );
 
 namespace ProposeDraftDate\Scripts;
@@ -14,7 +17,7 @@ const EDITOR_BUNDLE_HANDLE = 'propose-draft-date';
  * Connect namespace functions to actions & hooks.
  */
 function setup() : void {
-	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueueBlockEditorAssets' );
+	add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_block_editor_assets' );
 }
 
 /**
@@ -23,14 +26,14 @@ function setup() : void {
  * @return string
  */
 function manifest_file_path() : string {
-	$pluginPath = trailingslashit( plugin_dir_path( dirname( __FILE__ ) ) );
-	return $pluginPath . 'build/asset-manifest.json';
+	$plugin_path = trailingslashit( plugin_dir_path( dirname( __FILE__ ) ) );
+	return $plugin_path . 'build/asset-manifest.json';
 }
 
 /**
  * Enqueue editor-only assets based on the generated `asset-manifest.json` file.
  */
-function enqueueBlockEditorAssets() : void {
+function enqueue_block_editor_assets() : void {
 	AssetLoader\enqueue_asset(
 		manifest_file_path(),
 		'propose-draft-date.js',

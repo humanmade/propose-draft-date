@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset>
+	<!-- Use HM Coding Standards -->
+	<rule ref="vendor/humanmade/coding-standards" />
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="HM.Files.FunctionFileName.WrongFile" />
+		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+	</rule>
+</ruleset>

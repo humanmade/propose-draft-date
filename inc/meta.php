@@ -1,7 +1,10 @@
 <?php
 /**
  * Define plugin-managed meta values.
+ *
+ * @package propose-draft-date
  */
+
 declare( strict_types=1 );
 
 namespace ProposeDraftDate\Meta;
@@ -10,7 +13,7 @@ namespace ProposeDraftDate\Meta;
  * Connect namespace functions to actions & hooks.
  */
 function setup() : void {
-    add_action( 'init', __NAMESPACE__ . '\\register_meta' );
+		add_action( 'init', __NAMESPACE__ . '\\register_meta' );
 }
 
 /**
@@ -57,7 +60,7 @@ function register_meta(): void {
 				'type' => 'string',
 				'show_in_rest' => true,
 				'sanitize_callback' => __NAMESPACE__ . '\\sanitize_date_string',
-				'auth_callback' => __NAMESPACE__ . '\\propose_date_auth_callback'
+				'auth_callback' => __NAMESPACE__ . '\\propose_date_auth_callback',
 			]
 		);
 	}

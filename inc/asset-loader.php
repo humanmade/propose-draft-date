@@ -1,7 +1,13 @@
 <?php
 /**
  * Register and enqueue files declared in JSON webpack asset manifests.
+ *
+ * @package propose-draft-date
  */
+
+// We aren't getting remote files, disable warning preferring wp_remote_get.
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+
 declare( strict_types=1 );
 
 namespace ProposeDraftDate\AssetLoader;
@@ -102,14 +108,15 @@ function register_asset( string $manifest_path, string $target_asset, array $opt
 		wp_register_style(
 			$options['handle'],
 			$asset_uri,
-			$options['styles']
+			$options['styles'],
+			$asset_uri
 		);
 	} else {
 		wp_register_script(
 			$options['handle'],
 			$asset_uri,
 			$options['scripts'],
-			false,
+			$asset_uri,
 			true
 		);
 	}
@@ -127,7 +134,7 @@ function register_asset( string $manifest_path, string $target_asset, array $opt
  *     @type array  $styles  Style dependencies. Optional.
  * }
  */
-function enqueue_asset(string $manifest_path, string $target_asset, array $options = []) : void {
+function enqueue_asset( string $manifest_path, string $target_asset, array $options = [] ) : void {
 	register_asset( $manifest_path, $target_asset, $options );
 
 	// $target_asset will share a filename extension with the enqueued asset.

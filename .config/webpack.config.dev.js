@@ -27,7 +27,7 @@ const config = {
 		extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
 	},
 	entry: {
-		'post-unscheduled-check': filePath( 'src/editor.tsx' ),
+		'propose-draft-date': filePath( 'src/editor.tsx' ),
 	},
 	output: {
 		path: filePath( 'build' ),

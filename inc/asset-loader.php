@@ -98,11 +98,20 @@ function register_asset( string $manifest_path, string $target_asset, array $opt
 
 	$asset_uri = get_manifest_resource( $manifest_path, $target_asset );
 
+	error_log( 'asset uri: ' . (string) $asset_uri );
+
 	if ( empty( $asset_uri ) ) {
-		// @TODO: Signal or log that enqueue has failed, if not is_css($asset_uri).
-		// Failure is allowed for CSS files as they are not exported in dev builds.
+		// TODO: Consider warning in the console if the asset could not be found.
+		// (Failure should be allowed for CSS files; they are not exported in dev.)
 		return;
 	}
+
+	// Reconcile static asset builds relative to the plugin directory.
+	if ( strpos( $asset_uri, '//' ) === false ) {
+		$asset_uri = trailingslashit( plugin_dir_url( __DIR__ ) ) . $asset_uri;
+	}
+
+	error_log( $asset_uri );
 
 	if ( is_css( $asset_uri ) ) {
 		wp_register_style(

@@ -25,7 +25,7 @@ module.exports = presets.production( {
 		extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
 	},
 	entry: {
-		'post-unscheduled-check': filePath( 'src/editor.tsx' ),
+		'propose-draft-date': filePath( 'src/editor.tsx' ),
 	},
 	output: {
 		path: filePath( 'build' ),
@@ -34,6 +34,8 @@ module.exports = presets.production( {
 	},
 	plugins: [
 		clean( [ filePath( 'build' ) ] ),
-		manifest(),
+		manifest( {
+			publicPath: 'build/',
+		} ),
 	],
 } );

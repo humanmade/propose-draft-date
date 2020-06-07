@@ -8,7 +8,7 @@ This is a WordPress plugin that provides an interface within the [block editor](
 
 The following filters are available to modify the behavior of this plugin.
 
-### `proposed_date_supported_post_types**
+### `proposed_date_supported_post_types`
 
 Modify which post types can take a proposed date.
 

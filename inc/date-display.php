@@ -59,17 +59,6 @@ function filter_get_the_date( string $the_date, string $format, $post ) : string
 }
 
 /**
- * Filters the time a post was written.
- *
- * @param string      $the_time The formatted time.
- * @param string      $format   Format to use for retrieving the time the post was written.
- *                              Accepts 'G', 'U', or PHP date format value specified
- *                              in 'time_format' option. Default empty.
- * @param int|WP_Post $post     WP_Post object or ID.
- */
-// return apply_filters( 'get_the_time', $the_time, $format, $post );
-
-/**
  * Undocumented function
  *
  * @param string $the_date The formatted date string.

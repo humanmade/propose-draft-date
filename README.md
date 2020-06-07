@@ -42,10 +42,10 @@ Example: Accept proposed dates when transitioning to a custom status.
  * Always accept any available proposed date when transitioning to the
  * `my-scheduled` custom post status.
  *
- * @param bool    $accept_proposal Whether, given the situation, a proposal should be accepted.
+ * @param bool    $accept_proposal Whether a proposal should be accepted.
  * @param string  $new_status      New post status.
  * @param string  $old_status      Previous post status.
- * @param WP_Post $post            The post being transitioned.
+ * @param WP_Post $post            The post being updated, before changes are applied.
  *
  * @return bool Whether a proposed date should be applied at this time.
  */

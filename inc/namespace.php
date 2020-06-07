@@ -9,8 +9,6 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate;
 
-use WP_Post;
-
 /**
  * Connect namespace functions to actions & hooks.
  */
@@ -18,7 +16,6 @@ function setup() : void {
 	add_filter( 'get_the_date', __NAMESPACE__ . '\\filter_get_the_date', 10, 3 );
 	add_filter( 'the_date', __NAMESPACE__ . '\\filter_the_date', 10, 2 );
 	add_filter( 'get_post_time', __NAMESPACE__ . '\\filter_get_post_time', 10, 2 );
-	// add_action( 'transition_post_status', __NAMESPACE__ . '\\apply_proposed_date_on_publish', 10, 3 );
 	add_filter( 'wp_insert_post_data', __NAMESPACE__ . '\\apply_proposed_date_before_insert', 10, 3 );
 }
 
@@ -133,7 +130,7 @@ function filter_get_post_time( $time, string $format ) {
  * @return bool Whether the provided status has a floating date.
  */
 function status_has_floating_date( string $post_status ) : bool {
-	return in_array( $post_status, get_post_stati( array( 'date_floating' => true ) ), true );
+	return in_array( $post_status, get_post_stati( [ 'date_floating' => true ] ), true );
 }
 
 /**
@@ -149,16 +146,11 @@ function status_has_floating_date( string $post_status ) : bool {
  */
 function apply_proposed_date_before_insert( array $data, $postarr, $unsanitized_postarr ) : array {
 	$post_id = $postarr['ID'] ?? '';
-	// error_log( 'wp_insert_post_data: ' . print_r( $data, true ) );
-	// error_log( (string) $data['ID'] ?? 'empty' );
-	// error_log( (string) $postarr['ID'] );
 	// Skip all not-yet-saved posts (which cannot have meta yet), and skip any
 	// post that does not support the proposed date meta field.
 	if ( empty( $post_id ) || ! is_post_type_supported( $data['post_type'] ) ) {
 		return $data;
 	}
-
-	error_log( print_r( $data, true ) );
 
 	$proposed_date = Meta\get_proposed_date( $post_id );
 
@@ -170,13 +162,7 @@ function apply_proposed_date_before_insert( array $data, $postarr, $unsanitized_
 	$existing_post = get_post( $post_id );
 	$old_status = $existing_post->post_status;
 
-	error_log( 'Existing post: ' . print_r( [
-		'post_date' => $existing_post->post_date,
-		'post_date_gmt' => $existing_post->post_date_gmt,
-	], true ) );
-
-	// Determine whether, given the existing and incoming post data, we should
-	// apply the pending date.
+	// Determine whether the circumstances warrant applying the proposed date.
 	$accept_proposal = (
 		// If previous status was not floating-date, do not override the date.
 		status_has_floating_date( $old_status )
@@ -190,7 +176,7 @@ function apply_proposed_date_before_insert( array $data, $postarr, $unsanitized_
 
 	/**
 	 * Filter whether a proposed date should be applied to a post being saved in
-	 * the database (providing that a date proposal is available).
+	 * the database.
 	 *
 	 * @param bool    $accept_proposal Whether, given the situation, a proposal should be accepted.
 	 * @param string  $new_status      New post status.
@@ -199,14 +185,11 @@ function apply_proposed_date_before_insert( array $data, $postarr, $unsanitized_
 	 */
 	$accept_proposal = apply_filters( 'proposed_date_should_apply_proposal', $accept_proposal, $data['post_status'], $old_status, $existing_post );
 
-	error_log( 'Filtered accept_proposal: ' . ( $accept_proposal ? 'true' : 'false' ) );
-
 	if ( ! $accept_proposal ) {
 		return $data;
 	}
 
-	// This logic duplicated from wp_insert_post.
-	// Validate the proposed date.
+	// Validate the proposed date. This logic is duplicated from wp_insert_post.
 	$mm         = substr( $proposed_date, 5, 2 );
 	$jj         = substr( $proposed_date, 8, 2 );
 	$aa         = substr( $proposed_date, 0, 4 );
@@ -215,99 +198,23 @@ function apply_proposed_date_before_insert( array $data, $postarr, $unsanitized_
 		trigger_error(
 			sprintf(
 				'did not apply invalid proposed date string "%s" for post %d',
-				$proposed_date,
-				$post_id
+				esc_attr( $proposed_date ),
+				esc_attr( $post_id )
 			)
 		);
 		return $data;
 	}
+
+	// Apply the validated proposal to the post.
 	$data['post_date'] = $proposed_date;
 	$data['post_date_gmt'] = get_gmt_from_date( $proposed_date );
 
 	// Schedule meta to be removed from the updated post, once saved.
-	add_action( 'edit_post', function( $updated_post_id, $post ) use ( $post_id ) {
-		if ( $updated_post_id !== $post_id ) {
-			return;
+	add_action( 'edit_post', function( $updated_post_id ) use ( $post_id ) {
+		if ( $updated_post_id === $post_id ) {
+			delete_post_meta( $post_id, Meta\PROPOSED_DATE_META_KEY );
 		}
-		delete_post_meta( $post_id, Meta\PROPOSED_DATE_META_KEY );
-	}, 10, 2 );
+	}, 10, 1 );
 
 	return $data;
-}
-
-/**
- * If a post with a proposed date is published, conditionally promote the
- * proposed date to be the actual date of the post.
- *
- * @param string $new_status New post status.
- * @param string $old_status Previous post status.
- * @param WP_Post $post
- *
- * @return int|void Returns are for testing purposes only.
- */
-function apply_proposed_date_on_publish( string $new_status, string $old_status, WP_Post $post ) : void {
-	if ( ! is_post_type_supported( $post->post_type ) ) {
-		return;
-	}
-
-	error_log( 'Transitioning  ' . $post->post_title . ' from ' . $old_status . ' to ' . $new_status );
-
-	// Heuristic check to determine if a post is becoming scheduled in some way.
-	$accept_proposal = (
-		! in_array( $old_status, [ 'publish', 'private', 'future' ], true )
-	) && (
-		in_array( $new_status, [ 'publish', 'private', 'future' ], true )
-	);
-	error_log( 'a: ' . ( $accept_proposal  ? 'true' : 'false' ) );
-
-	error_log( print_r( $post, true ) );
-
-	// A proposed date should never override an explicitly-set date.
-	if ( $post->post_date_gmt !== '0000-00-00 00:00:00' ) {
-		$accept_proposal = false;
-	}
-	error_log( 'b: ' . ( $accept_proposal  ? 'true' : 'false' ) );
-
-	/**
-	 * Filter whether a proposed date should be applied to a transitioning post
-	 * (if a date proposal is available).
-	 *
-	 * @param bool    $accept_proposal Whether, given the situation, a proposal should be accepted.
-	 * @param string  $new_status      New post status.
-	 * @param string  $old_status      Previous post status.
-	 * @param WP_Post $post            The post being transitioned.
-	 */
-	$accept_proposal = apply_filters( 'proposed_date_should_apply_proposal', $accept_proposal, $new_status, $old_status, $post );
-
-	if ( ! $accept_proposal ) {
-		return;
-	}
-
-	$proposed_date = Meta\get_proposed_date( $post );
-	error_log( 'c: ' . $proposed_date );
-	if ( empty( $proposed_date ) ) {
-		return;
-	}
-
-	$date_data = rest_get_date_with_gmt( $proposed_date );
-	if ( empty( $date_data ) ) {
-		return;
-	}
-
-	// Apply the proposed date to the post.
-	list( $date, $date_gmt ) = $date_data;
-	error_log( 'dates: ' . $date . '; ' . $date_gmt );
-
-	global $wpdb;
-	$wpdb->update(
-		$wpdb->posts,
-		[
-			'post_date'     => $date,
-			'post_date_gmt' => $date_gmt,
-		],
-		[ 'ID' => $post->ID ]
-	);
-
-	// Remove meta from updated post.
-	delete_post_meta( $post->ID, Meta\PROPOSED_DATE_META_KEY );
 }

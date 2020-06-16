@@ -6,7 +6,7 @@ before_script:
 
 script:
   - composer lint
-  - docker run --rm -v "$PWD:/code" humanmade/plugin-tester
+  - composer test
 
 cache:
   timeout: 1000

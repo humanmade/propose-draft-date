@@ -16,6 +16,6 @@
     "scripts": {
         "lint": "phpcs -s --cache=.cache/phpcs.json inc tests",
         "lint:fix": "phpcbf inc tests",
-        "test": "phpunit"
+        "test": "docker run --rm -v \"$PWD:/code\" humanmade/plugin-tester"
     }
 }

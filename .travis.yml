@@ -5,7 +5,7 @@ before_script:
   - composer install
 
 script:
-  - composer run-script lint
+  - composer lint
   - docker run --rm -v "$PWD:/code" humanmade/plugin-tester
 
 cache:

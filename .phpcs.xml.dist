@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <ruleset>
-	<!-- Use HM Coding Standards -->
-	<rule ref="vendor/humanmade/coding-standards">
+	<!-- Use HM Coding Standards. -->
+	<rule ref="HM">
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 		<exclude name="HM.Files.FunctionFileName.WrongFile" />
 		<!-- This rule precludes verbosely documenting array parameters. -->
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
 	</rule>
 
-	<!-- Permit tests to omit function comments.-->
+	<!-- Permit tests to omit function comments. -->
 	<rule ref="Squiz.Commenting.FunctionComment.Missing">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>

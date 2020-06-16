@@ -6,13 +6,10 @@
   "author": "K. Adam White",
   "license": "GPL-2.0-or-later",
   "browserslist": [
-    "last 2 firefox versions",
-    "last 2 chrome versions",
-    "last 2 edge versions",
-    "last 2 safari versions",
-    "ie >= 11",
-    "not ie < 10",
-    ">1%"
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "ie >= 11"
   ],
   "scripts": {
     "build": "webpack --config=.config/webpack.config.prod.js",

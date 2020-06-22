@@ -26,4 +26,4 @@ setup();
 
 // Customize the display of the dates within the site.
 require_once __DIR__ . '/inc/date-display.php';
-setup();
+Date_Display\setup();

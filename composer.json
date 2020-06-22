@@ -1,5 +1,5 @@
 {
-    "name": "kadamwhite/propose-draft-date",
+    "name": "humanmade/propose-draft-date",
     "type": "wordpress-plugin",
     "require-dev": {
         "10up/wp_mock": "0.4.2",

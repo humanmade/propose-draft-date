@@ -3,8 +3,8 @@
  * Plugin Name: Propose Draft Date
  * Description: Permit contributing authors to suggest a date for a draft post which takes effect on publish.
  * Version: 0.1
- * Author: K. Adam White
- * Author URI: https://www.kadamwhite.com
+ * Author: Human Made
+ * Author URI: https://www.humanmade.com
  * License:     GPL-2.0+
  */
 declare( strict_types=1 );

@@ -1,7 +1,6 @@
 <phpunit
-	colors="true"
 	bootstrap="tests/bootstrap.php"
-	backupGlobals="false"
+	colors="true"
 >
 	<php>
 		<env name="APPLICATION_ENV" value="development"/>
@@ -14,8 +13,8 @@
 	</testsuites>
 
 	<filter>
-		<whitelist>
-			<directory>./inc</directory>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">inc</directory>
 		</whitelist>
 	</filter>
 </phpunit>

@@ -2,11 +2,11 @@ services:
   - docker
 
 before_script:
-  - composer install
+  - travis_retry composer install --no-interaction --no-progress --prefer-source
 
 script:
-  - composer run-script lint
-  - docker run --rm -v "$PWD:/code" humanmade/plugin-tester
+  - composer lint
+  - composer test
 
 cache:
   timeout: 1000

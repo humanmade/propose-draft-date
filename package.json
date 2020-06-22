@@ -6,23 +6,20 @@
   "author": "K. Adam White",
   "license": "GPL-2.0-or-later",
   "browserslist": [
-    "last 2 firefox versions",
-    "last 2 chrome versions",
-    "last 2 edge versions",
-    "last 2 safari versions",
-    "ie >= 11",
-    "not ie < 10",
-    ">1%"
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "ie >= 11"
   ],
   "scripts": {
     "build": "webpack --config=.config/webpack.config.prod.js",
     "start": "webpack-dev-server --config=.config/webpack.config.dev.js",
     "lint:js": "eslint --cache-location=.cache/eslint.json --ext js,jsx,ts,tsx .eslintrc.js .config src",
     "lint:js:fix": "eslint --fix --cache-location=.cache/eslint.json --ext js,jsx,ts,tsx .eslintrc.js .config src",
-    "lint:php": "composer run-script lint",
-    "lint:php:fix": "composer run-script lint:fix",
+    "lint:php": "composer lint",
+    "lint:php:fix": "composer lint:fix",
     "lint": "npm-run-all lint:*",
-    "test:php": "docker run --rm -v \"$PWD:/code\" humanmade/plugin-tester",
+    "test:php": "composer test",
     "test:js": "jest",
     "test:js:watch": "jest --watch",
     "test:js:coverage": "jest --coverage",
@@ -72,6 +69,5 @@
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
-  },
-  "dependencies": {}
+  }
 }

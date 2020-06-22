@@ -99,8 +99,7 @@ class Test_Meta extends WP_UnitTestCase {
 	public function test_get_proposed_date( string $post_status, $meta_value, $expected_date ) : void {
 		$post_id = self::factory()->post->create( [ 'post_status' => $post_status ] );
 		if ( $meta_value !== null ) {
-			$this->assertInternalType(
-				'integer',
+			$this->assertIsInt(
 				update_post_meta( $post_id, Meta\PROPOSED_DATE_META_KEY, $meta_value )
 			);
 		}
@@ -119,8 +118,7 @@ class Test_Meta extends WP_UnitTestCase {
 	public function test_get_proposed_date_with_post_object( string $post_status, $meta_value, $expected_date ) : void {
 		$post_id = self::factory()->post->create( [ 'post_status' => $post_status ] );
 		if ( $meta_value !== null ) {
-			$this->assertInternalType(
-				'integer',
+			$this->assertIsInt(
 				update_post_meta( $post_id, Meta\PROPOSED_DATE_META_KEY, $meta_value )
 			);
 		}

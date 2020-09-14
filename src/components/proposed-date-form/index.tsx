@@ -68,7 +68,7 @@ const PostScheduleWrapper: FC = ( { children } ) => {
 	} ) );
 
 	let date = useSelect( ( select ) => select( 'core/editor' ).getEditedPostAttribute( 'date' ) );
-	date = proposedDate && proposedDate;
+	date = proposedDate.length > 0 ? proposedDate : date;
 
 	return (
 		<PostSchedule

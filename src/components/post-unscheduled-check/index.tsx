@@ -20,7 +20,7 @@ export const PostUnscheduledCheck: FC<PostUnscheduledCheckProps> = ( {
 	postStatus,
 	isPublished,
 } ) => {
-	if ( isPublished || hasPublishAction || ! [ 'draft', 'future' ].includes( postStatus ) ) {
+	if ( isPublished || hasPublishAction || ! [ 'auto-draft', 'draft', 'future' ].includes( postStatus ) ) {
 		return null;
 	}
 

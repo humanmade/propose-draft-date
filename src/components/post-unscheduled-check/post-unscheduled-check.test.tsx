@@ -56,6 +56,16 @@ describe( 'PostUnscheduledCheck', () => {
 		expect( queryByText( 'Wrapped Content' ) ).toBeNull();
 	} );
 
+	it( 'returns children if all conditions are satisfied when post status is auto-draft', () => {
+		const { container, queryByText } = renderWithProps( {
+			postStatus: 'auto-draft',
+			hasPublishAction: false,
+			isPublished: false,
+		} );
+		expect( container ).toMatchSnapshot();
+		expect( queryByText( 'Wrapped Content' ) ).toBeInTheDocument();
+	} );
+
 	it( 'returns children if all conditions are satisfied when post status is draft', () => {
 		const { container, queryByText } = renderWithProps( {
 			postStatus: 'draft',

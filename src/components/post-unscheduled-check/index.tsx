@@ -7,6 +7,7 @@ import React, { FC } from 'react';
  * WordPress dependencies.
  */
 import { useSelect } from '@wordpress/data';
+import { applyFilters } from '@wordpress/hooks';
 
 export interface PostUnscheduledCheckProps {
 	postStatus: string;
@@ -20,7 +21,17 @@ export const PostUnscheduledCheck: FC<PostUnscheduledCheckProps> = ( {
 	postStatus,
 	isPublished,
 } ) => {
-	if ( isPublished || hasPublishAction || ! [ 'auto-draft', 'draft', 'future' ].includes( postStatus ) ) {
+	if ( isPublished || hasPublishAction ) {
+		return null;
+	}
+
+	/**
+	 * Filter whether the proposed date UI should be shown for a given post status.
+	 *
+	 * @param {String[]} statuses List of statuses supporting Proposed Date UI.
+	 */
+	const supportedStatuses = applyFilters( 'proposed_date_supported_statuses', [ 'auto-draft', 'draft', 'future' ] );
+	if ( ! supportedStatuses.includes( postStatus ) ) {
 		return null;
 	}
 

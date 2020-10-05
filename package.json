@@ -44,6 +44,7 @@
     "@wordpress/data": "^4.19.0",
     "@wordpress/date": "^3.9.0",
     "@wordpress/edit-post": "^3.18.0",
+    "@wordpress/hooks": "^2.9.0",
     "@wordpress/i18n": "^3.13.0",
     "@wordpress/jest-preset-default": "^6.1.0",
     "block-editor-hmr": "^0.6.0",

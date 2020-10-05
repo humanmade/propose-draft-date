@@ -1,6 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PostUnscheduledCheck returns children if all conditions are satisfied 1`] = `
+exports[`PostUnscheduledCheck returns children if all conditions are satisfied when post status is draft 1`] = `
+<div>
+  <p>
+    Wrapped Content
+  </p>
+</div>
+`;
+
+exports[`PostUnscheduledCheck returns children if all conditions are satisfied when post status is future 1`] = `
 <div>
   <p>
     Wrapped Content

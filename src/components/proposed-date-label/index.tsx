@@ -21,19 +21,23 @@ import useMeta from '../../hooks/use-meta';
  */
 export const ProposedDateLabel: FC<{
 	date?: string;
-	isFloating: boolean;
+	postStatus: string;
 	proposedDate?: string;
-}> = ( { date, isFloating, proposedDate } ) => {
+}> = ( { date, postStatus, proposedDate } ) => {
 	const { dateFormat } = useExperimentalSettings( ( settings ) => ( {
 		dateFormat: `${ settings.formats.date } ${ settings.formats.time }`,
 	} ) );
 
-	if ( date && ! isFloating ) {
-		return dateI18n( dateFormat, date );
+	if ( postStatus !== 'draft' ) {
+		return __( 'Immediately' );
 	}
 
-	if ( isFloating && proposedDate ) {
+	if ( proposedDate ) {
 		return dateI18n( dateFormat, proposedDate );
+	}
+
+	if ( date ) {
+		return dateI18n( dateFormat, date );
 	}
 
 	return __( 'Immediately' );
@@ -45,15 +49,15 @@ export const ProposedDateLabel: FC<{
  */
 export default function<FC> () {
 	const [ proposedDate ] = useMeta<string>( 'proposed_publish_date' );
-	const { date, isFloating } = useSelect( ( select ) => ( {
+	const { date, postStatus } = useSelect( ( select ) => ( {
 		date: select( 'core/editor' ).getEditedPostAttribute( 'date' ),
-		isFloating: select( 'core/editor' ).isEditedPostDateFloating(),
+		postStatus: select( 'core/editor' ).getEditedPostAttribute( 'status' ),
 	} ) );
 
 	return (
 		<ProposedDateLabel
 			date={ date }
-			isFloating={ isFloating }
+			postStatus={ postStatus }
 			proposedDate={ proposedDate }
 		/>
 	);

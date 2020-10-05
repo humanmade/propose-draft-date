@@ -9,7 +9,7 @@ import React, { FC } from 'react';
 import { useSelect } from '@wordpress/data';
 
 export interface PostUnscheduledCheckProps {
-	isFloating: boolean;
+	postStatus: string;
 	hasPublishAction: boolean;
 	isPublished: boolean;
 }
@@ -17,10 +17,10 @@ export interface PostUnscheduledCheckProps {
 export const PostUnscheduledCheck: FC<PostUnscheduledCheckProps> = ( {
 	children,
 	hasPublishAction,
-	isFloating,
+	postStatus,
 	isPublished,
 } ) => {
-	if ( isPublished || hasPublishAction || ! isFloating ) {
+	if ( isPublished || hasPublishAction || ! [ 'draft', 'future' ].includes( postStatus ) ) {
 		return null;
 	}
 
@@ -33,18 +33,18 @@ export const PostUnscheduledCheck: FC<PostUnscheduledCheckProps> = ( {
 
 /**
  * Wrapper component that will only render if the current user cannot schedule
- * posts and the current post is not already scheduled or published.
+ * posts or published.
  */
 const ConnectedPostUnscheduledCheck: FC = ( { children } ) => {
 	const props = useSelect( ( select ) => {
 		const {
 			getCurrentPost,
 			isCurrentPostPublished,
-			isEditedPostDateFloating,
+			getEditedPostAttribute,
 		} = select( 'core/editor' );
 		return {
 			hasPublishAction: Boolean( getCurrentPost()?._links?.['wp:action-publish'] ) || false,
-			isFloating: isEditedPostDateFloating(),
+			postStatus: getEditedPostAttribute( 'status' ),
 			isPublished: isCurrentPostPublished(),
 		};
 	} );

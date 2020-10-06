@@ -21,16 +21,11 @@ import useMeta from '../../hooks/use-meta';
  */
 export const ProposedDateLabel: FC<{
 	date?: string;
-	postStatus: string;
 	proposedDate?: string;
-}> = ( { date, postStatus, proposedDate } ) => {
+}> = ( { date, proposedDate } ) => {
 	const { dateFormat } = useExperimentalSettings( ( settings ) => ( {
 		dateFormat: `${ settings.formats.date } ${ settings.formats.time }`,
 	} ) );
-
-	if ( postStatus !== 'draft' ) {
-		return __( 'Immediately' );
-	}
 
 	if ( proposedDate ) {
 		return dateI18n( dateFormat, proposedDate );
@@ -50,14 +45,12 @@ export const ProposedDateLabel: FC<{
 export default function<FC> () {
 	const [ proposedDate ] = useMeta<string>( 'proposed_publish_date' );
 	const { date, postStatus } = useSelect( ( select ) => ( {
-		date: select( 'core/editor' ).getEditedPostAttribute( 'date' ),
-		postStatus: select( 'core/editor' ).getEditedPostAttribute( 'status' ),
+		date: select( 'core/editor' ).getEditedPostAttribute( 'date' )
 	} ) );
 
 	return (
 		<ProposedDateLabel
 			date={ date }
-			postStatus={ postStatus }
 			proposedDate={ proposedDate }
 		/>
 	);

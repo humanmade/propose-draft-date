@@ -6,6 +6,8 @@
 		<exclude name="HM.Files.FunctionFileName.WrongFile" />
 		<!-- This rule precludes verbosely documenting array parameters. -->
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+		<!-- We use / namespacing in our hooks. -->
+		<exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores" />
 	</rule>
 
 	<!-- Permit tests to omit function comments. -->

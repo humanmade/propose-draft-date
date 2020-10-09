@@ -45,14 +45,23 @@ class Test_Filters extends WP_UnitTestCase {
 	 */
 	public function data_get_supported_post_types() : array {
 		return [
-			[ [ 'post', 'page' ], null ],
-			[ [ 'post', 'page', 'my_cpt' ], function( $supported_types ) {
-				$supported_types[] = 'my_cpt';
-				return $supported_types;
-			} ],
-			[ [ 'custom', 'types', 'only!' ], function( $supported_types ) {
-				return [ 'custom', 'types', 'only!' ];
-			} ],
+			[
+				[ 'post', 'page' ],
+				null,
+			],
+			[
+				[ 'post', 'page', 'my_cpt' ],
+				function( $supported_types ) {
+					$supported_types[] = 'my_cpt';
+					return $supported_types;
+				},
+			],
+			[
+				[ 'custom', 'types', 'only!' ],
+				function( $supported_types ) {
+					return [ 'custom', 'types', 'only!' ];
+				},
+			],
 		];
 	}
 }

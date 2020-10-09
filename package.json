@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "propose-draft-date",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Allow contributing authors to set dates for draft posts.",
   "author": "K. Adam White",
   "license": "GPL-2.0-or-later",

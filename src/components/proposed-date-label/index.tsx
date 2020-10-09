@@ -9,6 +9,7 @@ import React, { FC } from 'react';
 import { __ } from '@wordpress/i18n';
 import { dateI18n } from '@wordpress/date';
 import { useSelect } from '@wordpress/data';
+import { applyFilters } from '@wordpress/hooks';
 
 /**
  * Internal dependencies.
@@ -22,20 +23,29 @@ import useMeta from '../../hooks/use-meta';
 export const ProposedDateLabel: FC<{
 	date?: string;
 	proposedDate?: string;
-}> = ( { date, proposedDate } ) => {
+	isFloating: boolean;
+}> = ( { date, proposedDate, isFloating } ) => {
+	/**
+	 * Filters Floating Status of the post.
+	 *
+	 * @param {Boolean} isFloating Default Floating.
+	 */
+	isFloating = applyFilters( 'proposed.date.label.is.floating', isFloating );
+
 	const { dateFormat } = useExperimentalSettings( ( settings ) => ( {
 		dateFormat: `${ settings.formats.date } ${ settings.formats.time }`,
 	} ) );
+	const defaultLabel = __( 'Immediately' );
+	const dateLabel = isFloating
+		? ( proposedDate ? dateI18n( dateFormat, proposedDate ) : defaultLabel )
+		: ( date ? dateI18n( dateFormat, date ) : defaultLabel );
 
-	if ( proposedDate ) {
-		return dateI18n( dateFormat, proposedDate );
-	}
-
-	if ( date ) {
-		return dateI18n( dateFormat, date );
-	}
-
-	return __( 'Immediately' );
+	/**
+	 * Filters Label for proposed Draft label.
+	 *
+	 * @param {String} dateLabel Proposed Date Label or string `Immediately`.
+	 */
+	return applyFilters( 'proposed.date.label.date.label', dateLabel );
 };
 
 /**
@@ -44,14 +54,16 @@ export const ProposedDateLabel: FC<{
  */
 export default function<FC> () {
 	const [ proposedDate ] = useMeta<string>( 'proposed_publish_date' );
-	const { date, postStatus } = useSelect( ( select ) => ( {
-		date: select( 'core/editor' ).getEditedPostAttribute( 'date' )
+	const { date, isFloating } = useSelect( ( select ) => ( {
+		date: select( 'core/editor' ).getEditedPostAttribute( 'date' ),
+		isFloating: select( 'core/editor').isEditedPostDateFloating(),
 	} ) );
 
 	return (
 		<ProposedDateLabel
 			date={ date }
 			proposedDate={ proposedDate }
+			isFloating={ isFloating }
 		/>
 	);
 }

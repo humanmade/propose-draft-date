@@ -37,7 +37,7 @@ describe( 'PostUnscheduledCheck', () => {
 		expect( queryByText( 'Wrapped Content' ) ).toBeNull();
 	} );
 
-	it( 'returns null if a post is not draft', () => {
+	it( 'returns null if a post does not have a supported status', () => {
 		const { container, queryByText } = renderWithProps( {
 			isFloating: true,
 			postStatus: 'not-draft',

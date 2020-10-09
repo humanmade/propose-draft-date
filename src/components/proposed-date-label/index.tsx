@@ -26,26 +26,29 @@ export const ProposedDateLabel: FC<{
 	isFloating: boolean;
 }> = ( { date, proposedDate, isFloating } ) => {
 	/**
-	 * Filters Floating Status of the post.
+	 * Permit overriding "floating date" status of the post with a filter.
 	 *
-	 * @param {Boolean} isFloating Default Floating.
+	 * @param {Boolean} isFloating Post's original Floating status.
 	 */
-	isFloating = applyFilters( 'proposed.date.label.is.floating', isFloating );
+	const filteredIsFloating = applyFilters( 'proposed_date/is_floating', isFloating );
 
 	const { dateFormat } = useExperimentalSettings( ( settings ) => ( {
 		dateFormat: `${ settings.formats.date } ${ settings.formats.time }`,
 	} ) );
-	const defaultLabel = __( 'Immediately' );
-	const dateLabel = isFloating
-		? ( proposedDate ? dateI18n( dateFormat, proposedDate ) : defaultLabel )
-		: ( date ? dateI18n( dateFormat, date ) : defaultLabel );
+
+	let dateLabel = __( 'Immediately' );
+	if ( date && ! filteredIsFloating ) {
+		dateLabel = dateI18n( dateFormat, date );
+	} else if ( filteredIsFloating && proposedDate ) {
+		dateLabel = dateI18n( dateFormat, proposedDate );
+	}
 
 	/**
-	 * Filters Label for proposed Draft label.
+	 * Filters the text which displays the proposed date in the Document sidebar.
 	 *
-	 * @param {String} dateLabel Proposed Date Label or string `Immediately`.
+	 * @param {String} dateLabel The string to display when showing the date.
 	 */
-	return applyFilters( 'proposed.date.label.date.label', dateLabel );
+	return applyFilters( 'proposed_date/date_label', dateLabel );
 };
 
 /**

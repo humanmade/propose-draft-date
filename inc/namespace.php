@@ -31,7 +31,7 @@ function get_supported_post_types() : array {
 	 *
 	 * @param array $post_types Array of post types supporting proposed dates. Defaults to "post" and "page".
 	 */
-	return apply_filters( 'proposed_date/supported_post_types', $default_post_types );
+	return apply_filters( SUPPORTED_POST_TYPES_FILTER, $default_post_types );
 }
 
 /**

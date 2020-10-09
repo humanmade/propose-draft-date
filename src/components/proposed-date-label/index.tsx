@@ -46,9 +46,11 @@ export const ProposedDateLabel: FC<{
 	/**
 	 * Filters the text which displays the proposed date in the Document sidebar.
 	 *
-	 * @param {String} dateLabel The string to display when showing the date.
+	 * @param {String} dateLabel    The string to display when showing the date.
+	 * @param {String} proposedDate Proposed date meta value, if present.
+	 * @param {String} date         Current post date.
 	 */
-	return applyFilters( 'proposed_date/date_label', dateLabel );
+	return applyFilters( 'proposed_date/date_label', dateLabel, proposedDate, date );
 };
 
 /**

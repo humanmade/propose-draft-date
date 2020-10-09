@@ -10,7 +10,7 @@ import { useSelect } from '@wordpress/data';
 import { applyFilters } from '@wordpress/hooks';
 
 export interface PostUnscheduledCheckProps {
-	isFloating: boolean,
+	isFloating: boolean;
 	postStatus: string;
 	hasPublishAction: boolean;
 	isPublished: boolean;

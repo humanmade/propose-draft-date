@@ -56,7 +56,7 @@ export default function<FC> () {
 	const [ proposedDate ] = useMeta<string>( 'proposed_publish_date' );
 	const { date, isFloating } = useSelect( ( select ) => ( {
 		date: select( 'core/editor' ).getEditedPostAttribute( 'date' ),
-		isFloating: select( 'core/editor').isEditedPostDateFloating(),
+		isFloating: select( 'core/editor' ).isEditedPostDateFloating(),
 	} ) );
 
 	return (

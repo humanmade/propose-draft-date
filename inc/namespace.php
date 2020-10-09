@@ -9,6 +9,9 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate;
 
+const ACCEPT_PROPOSAL_FILTER = 'proposed_date/should_accept_proposal';
+const SUPPORTED_POST_TYPES_FILTER = 'proposed_date/supported_post_types';
+
 /**
  * Connect namespace functions to actions & hooks.
  */
@@ -28,7 +31,7 @@ function get_supported_post_types() : array {
 	 *
 	 * @param array $post_types Array of post types supporting proposed dates. Defaults to "post" and "page".
 	 */
-	return apply_filters( 'proposed_date_supported_post_types', $default_post_types );
+	return apply_filters( SUPPORTED_POST_TYPES_FILTER, $default_post_types );
 }
 
 /**
@@ -103,7 +106,7 @@ function apply_proposed_date_before_insert( array $data, $postarr, $unsanitized_
 	 * @param string  $old_status      Previous post status.
 	 * @param WP_Post $post            The post being updated as it exists prior to the update.
 	 */
-	$accept_proposal = apply_filters( 'proposed_date_should_apply_proposal', $accept_proposal, $data['post_status'], $old_status, $existing_post );
+	$accept_proposal = apply_filters( ACCEPT_PROPOSAL_FILTER, $accept_proposal, $data['post_status'], $old_status, $existing_post );
 
 	if ( ! $accept_proposal ) {
 		return $data;

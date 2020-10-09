@@ -71,6 +71,7 @@ module.exports = {
 			'ignoreComments': true,
 			'code': 200,
 		} ],
+		'no-param-reassign': [ 'error', { 'props': true } ],
 		'indent': 'off',
 	},
 	'plugins': [

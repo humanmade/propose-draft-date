@@ -17,6 +17,7 @@ require '/wp-phpunit/includes/functions.php';
 
 // Load in our custom files.
 require $base_dir . '/inc/meta.php';
+require $base_dir . '/inc/namespace.php';
 
 // Start up the WP testing environment.
 require '/wp-phpunit/includes/bootstrap.php';

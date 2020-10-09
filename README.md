@@ -8,7 +8,7 @@ This is a WordPress plugin that provides an interface within the [block editor](
 
 The following filters are available to modify the behavior of this plugin.
 
-### `proposed_date/supported_post_types`
+### `proposed_date/supported_post_types` (PHP filter)
 
 Server-side PHP filter to modify which post types can take a proposed date.
 
@@ -31,7 +31,7 @@ function filter_types_with_proposed_dates( array $post_types ) : array {
 add_filter( 'proposed_date/supported_post_types', 'filter_types_with_proposed_dates', 10, 1 );
 ```
 
-### `proposed_date/should_accept_proposal`
+### `proposed_date/should_accept_proposal` (PHP filter)
 
 Server-side PHP filter to determine, based on the old and new post status and the post object transitioning between those statuses, whether to check for a proposed date and apply it if found.
 
@@ -63,8 +63,48 @@ function accept_date_proposals_in_custom_status(
 add_filter( 'proposed_date/should_accept_proposal', 'accept_date_proposals_in_custom_status', 10, 4 );
 ```
 
-Example: Always accept proposed dates when present, regardless of other circumstances.
+Example: Always accept proposed dates when present, regardless of other circumstances. (If you do this you should also use the JS-side `proposed_date/date_label` filter to ensure you show the correct date value to contributors.)
 
 ```php
 add_filter( 'proposed_date/should_accept_proposal', '__return_true' );
+```
+
+### `proposed_date/date_label` (JS filter)
+
+Frontend JS filter to determine what date value to show when rendering the proposed date within Document sidebar.
+
+Example: Always show the proposed date, when present.
+
+```js
+function overrideProposedDateLabel( label, proposedDate, date ) {
+    if ( proposedDate ) {
+        return proposedDate;
+    }
+    return label;
+}
+wp.hooks.addFilter( 'proposed_date/date_label', 'my-plugin', overrideProposedDateLabel );
+```
+
+### `proposed_date/is_floating` (JS filter)
+
+Override whether to consider the post date is considered to be "floating" (that is to say, if the post is meant to be published "Immediately").
+
+Example: Force "floating" date status so that a proposed date will be displayed on the frontend even if an actual scheduled date value is present.
+
+```js
+function forceIsFloating( isFloating ) {
+    return true;
+}
+wp.hooks.addFilter( 'proposed_date/is_floating', 'my-plugin', forceIsFloating );
+```
+
+### `proposed_date/supported_statuses` (JS filter)
+
+Customize the list of post statuses which support a proposed date value.
+
+```js
+function filterSupportedStatuses( statuses ) {
+    return [ ...statuses, 'my_custom_status' ];
+}
+wp.hooks.addFilter( 'proposed_date/supported_statuses', 'my-plugin', filterSupportedStatuses );
 ```

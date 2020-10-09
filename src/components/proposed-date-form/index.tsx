@@ -7,6 +7,7 @@ import React, { FC, useCallback } from 'react';
  * WordPress dependencies.
  */
 import { DateTimePicker } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies.
@@ -66,9 +67,12 @@ const PostScheduleWrapper: FC = ( { children } ) => {
 		),
 	} ) );
 
+	let date = useSelect( ( select ) => select( 'core/editor' ).getEditedPostAttribute( 'date' ) );
+	date = proposedDate.length > 0 ? proposedDate : date;
+
 	return (
 		<PostSchedule
-			date={ proposedDate }
+			date={ date }
 			is12HourTime={ is12HourTime }
 			onChangeDate={ updateProposedDate }
 		>

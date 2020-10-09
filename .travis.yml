@@ -1,6 +1,10 @@
 services:
   - docker
 
+branches:
+  only:
+    - main
+
 before_script:
   - travis_retry composer install --no-interaction --no-progress --prefer-source
 

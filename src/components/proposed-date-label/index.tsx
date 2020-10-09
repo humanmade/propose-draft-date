@@ -9,6 +9,7 @@ import React, { FC } from 'react';
 import { __ } from '@wordpress/i18n';
 import { dateI18n } from '@wordpress/date';
 import { useSelect } from '@wordpress/data';
+import { applyFilters } from '@wordpress/hooks';
 
 /**
  * Internal dependencies.
@@ -21,22 +22,35 @@ import useMeta from '../../hooks/use-meta';
  */
 export const ProposedDateLabel: FC<{
 	date?: string;
-	isFloating: boolean;
 	proposedDate?: string;
-}> = ( { date, isFloating, proposedDate } ) => {
+	isFloating: boolean;
+}> = ( { date, proposedDate, isFloating } ) => {
+	/**
+	 * Permit overriding "floating date" status of the post with a filter.
+	 *
+	 * @param {Boolean} isFloating Post's original Floating status.
+	 */
+	const filteredIsFloating = applyFilters( 'proposed_date/is_floating', isFloating );
+
 	const { dateFormat } = useExperimentalSettings( ( settings ) => ( {
 		dateFormat: `${ settings.formats.date } ${ settings.formats.time }`,
 	} ) );
 
-	if ( date && ! isFloating ) {
-		return dateI18n( dateFormat, date );
+	let dateLabel = __( 'Immediately' );
+	if ( date && ! filteredIsFloating ) {
+		dateLabel = dateI18n( dateFormat, date );
+	} else if ( filteredIsFloating && proposedDate ) {
+		dateLabel = dateI18n( dateFormat, proposedDate );
 	}
 
-	if ( isFloating && proposedDate ) {
-		return dateI18n( dateFormat, proposedDate );
-	}
-
-	return __( 'Immediately' );
+	/**
+	 * Filters the text which displays the proposed date in the Document sidebar.
+	 *
+	 * @param {String} dateLabel    The string to display when showing the date.
+	 * @param {String} proposedDate Proposed date meta value, if present.
+	 * @param {String} date         Current post date.
+	 */
+	return applyFilters( 'proposed_date/date_label', dateLabel, proposedDate, date );
 };
 
 /**
@@ -53,8 +67,8 @@ export default function<FC> () {
 	return (
 		<ProposedDateLabel
 			date={ date }
-			isFloating={ isFloating }
 			proposedDate={ proposedDate }
+			isFloating={ isFloating }
 		/>
 	);
 }

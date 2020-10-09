@@ -42,6 +42,7 @@ module.exports = {
 	'rules': {
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/indent': [ 'warn', 'tab' ],
+		'@typescript-eslint/no-param-reassign': 'error',
 		'@typescript-eslint/no-var-requires': 'off',
 		'@typescript-eslint/quotes': [ 'error', 'single' ],
 		'react/jsx-props-no-spreading': 'off',
@@ -71,7 +72,6 @@ module.exports = {
 			'ignoreComments': true,
 			'code': 200,
 		} ],
-		'no-param-reassign': 'error',
 		'indent': 'off',
 	},
 	'plugins': [

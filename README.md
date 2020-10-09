@@ -8,9 +8,9 @@ This is a WordPress plugin that provides an interface within the [block editor](
 
 The following filters are available to modify the behavior of this plugin.
 
-### `proposed_date_supported_post_types`
+### `proposed_date/supported_post_types`
 
-Modify which post types can take a proposed date.
+Server-side PHP filter to modify which post types can take a proposed date.
 
 Example: Add proposed date support for a custom post type, and remove it from core pages.
 
@@ -28,12 +28,12 @@ function filter_types_with_proposed_dates( array $post_types ) : array {
     $post_types[] = 'my_custom_post_type';
     return $post_types;
 }
-add_filter( 'proposed_date_supported_post_types', 'filter_types_with_proposed_dates', 10, 1 );
+add_filter( 'proposed_date/supported_post_types', 'filter_types_with_proposed_dates', 10, 1 );
 ```
 
-### `proposed_date_should_apply_proposal`
+### `proposed_date/should_accept_proposal`
 
-Determine, based on the old and new post status and the post object transitioning between those statuses, whether to check for a proposed date and apply it if found.
+Server-side PHP filter to determine, based on the old and new post status and the post object transitioning between those statuses, whether to check for a proposed date and apply it if found.
 
 Example: Accept proposed dates when transitioning to a custom status.
 
@@ -60,5 +60,11 @@ function accept_date_proposals_in_custom_status(
     }
     return $accept_proposal;
 }
-add_filter( 'proposed_date_should_accept_proposal', 'accept_date_proposals_in_custom_status', 10, 4 );
+add_filter( 'proposed_date/should_accept_proposal', 'accept_date_proposals_in_custom_status', 10, 4 );
+```
+
+Example: Always accept proposed dates when present, regardless of other circumstances.
+
+```php
+add_filter( 'proposed_date/should_accept_proposal', '__return_true' );
 ```

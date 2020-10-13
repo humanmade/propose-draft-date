@@ -82,7 +82,7 @@ function overrideProposedDateLabel( label, proposedDate, date ) {
     }
     return label;
 }
-wp.hooks.addFilter( 'proposed_date/date_label', 'my-plugin', overrideProposedDateLabel );
+wp.hooks.addFilter( 'proposed_date_date_label', 'my-plugin', overrideProposedDateLabel );
 ```
 
 ### `proposed_date/is_floating` (JS filter)
@@ -95,7 +95,7 @@ Example: Force "floating" date status so that a proposed date will be displayed 
 function forceIsFloating( isFloating ) {
     return true;
 }
-wp.hooks.addFilter( 'proposed_date/is_floating', 'my-plugin', forceIsFloating );
+wp.hooks.addFilter( 'proposed_date_is_floating', 'my-plugin', forceIsFloating );
 ```
 
 ### `proposed_date/supported_statuses` (JS filter)
@@ -106,5 +106,5 @@ Customize the list of post statuses which support a proposed date value.
 function filterSupportedStatuses( statuses ) {
     return [ ...statuses, 'my_custom_status' ];
 }
-wp.hooks.addFilter( 'proposed_date/supported_statuses', 'my-plugin', filterSupportedStatuses );
+wp.hooks.addFilter( 'proposed_date_supported_statuses', 'my-plugin', filterSupportedStatuses );
 ```

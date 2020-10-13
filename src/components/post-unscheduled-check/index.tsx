@@ -28,7 +28,7 @@ export const PostUnscheduledCheck: FC<PostUnscheduledCheckProps> = ( {
 	 *
 	 * @param {Boolean} isFloating Post's original Floating status.
 	 */
-	const filteredIsFloating = applyFilters( 'proposed_date/is_floating', isFloating );
+	const filteredIsFloating = applyFilters( 'proposed_date_is_floating', isFloating );
 
 	if ( isPublished || hasPublishAction || ! filteredIsFloating ) {
 		return null;
@@ -39,7 +39,7 @@ export const PostUnscheduledCheck: FC<PostUnscheduledCheckProps> = ( {
 	 *
 	 * @param {String[]} statuses List of statuses supporting Proposed Date UI.
 	 */
-	const supportedStatuses = applyFilters( 'proposed_date/supported_statuses', [ 'auto-draft', 'draft', 'future' ] );
+	const supportedStatuses = applyFilters( 'proposed_date_supported_statuses', [ 'auto-draft', 'draft', 'future' ] );
 	if ( ! supportedStatuses.includes( postStatus ) ) {
 		return null;
 	}

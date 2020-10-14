@@ -30,7 +30,7 @@ export const ProposedDateLabel: FC<{
 	 *
 	 * @param {Boolean} isFloating Post's original Floating status.
 	 */
-	const filteredIsFloating = applyFilters( 'proposed_date_is_floating', isFloating );
+	const filteredIsFloating = applyFilters( 'proposed.date.is.floating', isFloating );
 
 	const { dateFormat } = useExperimentalSettings( ( settings ) => ( {
 		dateFormat: `${ settings.formats.date } ${ settings.formats.time }`,
@@ -50,7 +50,7 @@ export const ProposedDateLabel: FC<{
 	 * @param {String} proposedDate Proposed date meta value, if present.
 	 * @param {String} date         Current post date.
 	 */
-	return applyFilters( 'proposed_date_date_label', dateLabel, proposedDate, date );
+	return applyFilters( 'proposed.date.date.label', dateLabel, proposedDate, date );
 };
 
 /**

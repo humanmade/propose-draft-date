@@ -8,7 +8,7 @@ This is a WordPress plugin that provides an interface within the [block editor](
 
 The following filters are available to modify the behavior of this plugin.
 
-### `proposed_date/supported_post_types` (PHP filter)
+### `proposed_date.supported_post_types` (PHP filter)
 
 Server-side PHP filter to modify which post types can take a proposed date.
 
@@ -31,7 +31,7 @@ function filter_types_with_proposed_dates( array $post_types ) : array {
 add_filter( 'proposed_date.supported_post_types', 'filter_types_with_proposed_dates', 10, 1 );
 ```
 
-### `proposed_date/should_accept_proposal` (PHP filter)
+### `proposed_date.should_accept_proposal` (PHP filter)
 
 Server-side PHP filter to determine, based on the old and new post status and the post object transitioning between those statuses, whether to check for a proposed date and apply it if found.
 
@@ -63,13 +63,13 @@ function accept_date_proposals_in_custom_status(
 add_filter( 'proposed_date.should_accept_proposal', 'accept_date_proposals_in_custom_status', 10, 4 );
 ```
 
-Example: Always accept proposed dates when present, regardless of other circumstances. (If you do this you should also use the JS-side `proposed_date/date_label` filter to ensure you show the correct date value to contributors.)
+Example: Always accept proposed dates when present, regardless of other circumstances. (If you do this you should also use the JS-side `proposed_date.date_label` filter to ensure you show the correct date value to contributors.)
 
 ```php
 add_filter( 'proposed_date.should_accept_proposal', '__return_true' );
 ```
 
-### `proposed_date/date_label` (JS filter)
+### `proposed_date.date_label` (JS filter)
 
 Frontend JS filter to determine what date value to show when rendering the proposed date within Document sidebar.
 
@@ -85,7 +85,7 @@ function overrideProposedDateLabel( label, proposedDate, date ) {
 wp.hooks.addFilter( 'proposed_date.date_label', 'my-plugin', overrideProposedDateLabel );
 ```
 
-### `proposed_date/is_floating` (JS filter)
+### `proposed_date.is_floating` (JS filter)
 
 Override whether to consider the post date is considered to be "floating" (that is to say, if the post is meant to be published "Immediately").
 
@@ -98,7 +98,7 @@ function forceIsFloating( isFloating ) {
 wp.hooks.addFilter( 'proposed_date.is_floating', 'my-plugin', forceIsFloating );
 ```
 
-### `proposed_date/supported_statuses` (JS filter)
+### `proposed_date.supported_statuses` (JS filter)
 
 Customize the list of post statuses which support a proposed date value.
 
@@ -107,4 +107,19 @@ function filterSupportedStatuses( statuses ) {
     return [ ...statuses, 'my_custom_status' ];
 }
 wp.hooks.addFilter( 'proposed_date.supported_statuses', 'my-plugin', filterSupportedStatuses );
+```
+
+## Release Process
+
+Given a clean `main` branch with an updated version number in [`plugin.php`](./plugin.php), follow these steps to build and tag a release:
+
+```sh
+git checkout release
+git merge main
+npm run build
+git add -f build
+git commit -m 'Tag v{ YOUR VERSION NUMBER HERE }'
+git tag v{ YOUR VERSION NUMBER HERE }
+git push origin release
+git push origin tags
 ```

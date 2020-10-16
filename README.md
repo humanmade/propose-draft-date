@@ -108,3 +108,18 @@ function filterSupportedStatuses( statuses ) {
 }
 wp.hooks.addFilter( 'proposed_date.supported_statuses', 'my-plugin', filterSupportedStatuses );
 ```
+
+## Release Process
+
+Given a clean `main` branch with an updated version number in [`plugin.php`](./plugin.php), follow these steps to build and tag a release:
+
+```sh
+git checkout release
+git merge main
+npm run build
+git add -f build
+git commit -m 'Tag v{ YOUR VERSION NUMBER HERE }'
+git tag v{ YOUR VERSION NUMBER HERE }
+git push origin release
+git push origin tags
+```

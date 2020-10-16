@@ -5,11 +5,21 @@ import {
 	RenderResult,
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { addFilter } from '@wordpress/hooks';
 
 import {
 	PostUnscheduledCheck,
 	PostUnscheduledCheckProps,
 } from './index';
+
+const snapshotDidNotRender = '<div />';
+const shapshotRendered = `
+<div>
+  <p>
+    Wrapped Content
+  </p>
+</div>
+`;
 
 describe( 'PostUnscheduledCheck', () => {
 	let renderWithProps: (
@@ -33,7 +43,7 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: false,
 			isPublished: false,
 		} );
-		expect( container ).toMatchInlineSnapshot( '<div />' );
+		expect( container ).toMatchInlineSnapshot( snapshotDidNotRender );
 		expect( queryByText( 'Wrapped Content' ) ).toBeNull();
 	} );
 
@@ -44,7 +54,7 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: false,
 			isPublished: false,
 		} );
-		expect( container ).toMatchInlineSnapshot( '<div />' );
+		expect( container ).toMatchInlineSnapshot( snapshotDidNotRender );
 		expect( queryByText( 'Wrapped Content' ) ).toBeNull();
 	} );
 
@@ -55,7 +65,7 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: true,
 			isPublished: false,
 		} );
-		expect( container ).toMatchInlineSnapshot( '<div />' );
+		expect( container ).toMatchInlineSnapshot( snapshotDidNotRender );
 		expect( queryByText( 'Wrapped Content' ) ).toBeNull();
 	} );
 
@@ -66,7 +76,7 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: false,
 			isPublished: true,
 		} );
-		expect( container ).toMatchInlineSnapshot( '<div />' );
+		expect( container ).toMatchInlineSnapshot( snapshotDidNotRender );
 		expect( queryByText( 'Wrapped Content' ) ).toBeNull();
 	} );
 
@@ -77,7 +87,7 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: false,
 			isPublished: false,
 		} );
-		expect( container ).toMatchSnapshot();
+		expect( container ).toMatchInlineSnapshot( shapshotRendered );
 		expect( queryByText( 'Wrapped Content' ) ).toBeInTheDocument();
 	} );
 
@@ -88,7 +98,7 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: false,
 			isPublished: false,
 		} );
-		expect( container ).toMatchSnapshot();
+		expect( container ).toMatchInlineSnapshot( shapshotRendered );
 		expect( queryByText( 'Wrapped Content' ) ).toBeInTheDocument();
 	} );
 
@@ -99,7 +109,19 @@ describe( 'PostUnscheduledCheck', () => {
 			hasPublishAction: false,
 			isPublished: false,
 		} );
-		expect( container ).toMatchSnapshot();
+		expect( container ).toMatchInlineSnapshot( shapshotRendered );
+		expect( queryByText( 'Wrapped Content' ) ).toBeInTheDocument();
+	} );
+
+	it( 'permits "floating" status to be set by filter', () => {
+		addFilter( 'proposed_date.is_floating', 'jest', () => true );
+		const { container, queryByText } = renderWithProps( {
+			isFloating: false,
+			postStatus: 'draft',
+			hasPublishAction: false,
+			isPublished: false,
+		} );
+		expect( container ).toMatchInlineSnapshot( shapshotRendered );
 		expect( queryByText( 'Wrapped Content' ) ).toBeInTheDocument();
 	} );
 } );

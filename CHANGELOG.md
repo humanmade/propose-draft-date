@@ -3,6 +3,11 @@
 ## v0.3.0
 
 - Switched hook names to `propose_date.{hook_name}` syntax, due to lack of support for `/` separators in `wp.hooks` functions.
+  
+**v0.3.1**
+
+- clarified license information
+- fixed hook name references in README.md
 
 ## v0.2.0
 

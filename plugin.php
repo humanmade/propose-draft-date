@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Propose Draft Date
  * Description: Permit contributing authors to suggest a date for a draft post which takes effect on publish.
- * Version: 0.3.0
+ * Version: 0.3.1
  * Author: Human Made
  * Author URI: https://www.humanmade.com
  * License:     GPL-2.0+

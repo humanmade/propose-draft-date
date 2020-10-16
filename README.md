@@ -28,7 +28,7 @@ function filter_types_with_proposed_dates( array $post_types ) : array {
     $post_types[] = 'my_custom_post_type';
     return $post_types;
 }
-add_filter( 'proposed.date.supported.post.types', 'filter_types_with_proposed_dates', 10, 1 );
+add_filter( 'proposed_date.supported_post_types', 'filter_types_with_proposed_dates', 10, 1 );
 ```
 
 ### `proposed_date/should_accept_proposal` (PHP filter)
@@ -60,13 +60,13 @@ function accept_date_proposals_in_custom_status(
     }
     return $accept_proposal;
 }
-add_filter( 'proposed.date.should.accept.proposal', 'accept_date_proposals_in_custom_status', 10, 4 );
+add_filter( 'proposed_date.should_accept_proposal', 'accept_date_proposals_in_custom_status', 10, 4 );
 ```
 
 Example: Always accept proposed dates when present, regardless of other circumstances. (If you do this you should also use the JS-side `proposed_date/date_label` filter to ensure you show the correct date value to contributors.)
 
 ```php
-add_filter( 'proposed.date.should.accept.proposal', '__return_true' );
+add_filter( 'proposed_date.should_accept_proposal', '__return_true' );
 ```
 
 ### `proposed_date/date_label` (JS filter)
@@ -82,7 +82,7 @@ function overrideProposedDateLabel( label, proposedDate, date ) {
     }
     return label;
 }
-wp.hooks.addFilter( 'proposed.date.date.label', 'my-plugin', overrideProposedDateLabel );
+wp.hooks.addFilter( 'proposed_date.date_label', 'my-plugin', overrideProposedDateLabel );
 ```
 
 ### `proposed_date/is_floating` (JS filter)
@@ -95,7 +95,7 @@ Example: Force "floating" date status so that a proposed date will be displayed 
 function forceIsFloating( isFloating ) {
     return true;
 }
-wp.hooks.addFilter( 'proposed.date.is.floating', 'my-plugin', forceIsFloating );
+wp.hooks.addFilter( 'proposed_date.is_floating', 'my-plugin', forceIsFloating );
 ```
 
 ### `proposed_date/supported_statuses` (JS filter)
@@ -106,5 +106,5 @@ Customize the list of post statuses which support a proposed date value.
 function filterSupportedStatuses( statuses ) {
     return [ ...statuses, 'my_custom_status' ];
 }
-wp.hooks.addFilter( 'proposed.date.supported.statuses', 'my-plugin', filterSupportedStatuses );
+wp.hooks.addFilter( 'proposed_date.supported_statuses', 'my-plugin', filterSupportedStatuses );
 ```

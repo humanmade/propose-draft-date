@@ -1,6 +1,8 @@
 {
     "name": "humanmade/propose-draft-date",
+    "description": "Block Editor plugin to permit contributing users to set a proposed publishing date",
     "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
     "require-dev": {
         "10up/wp_mock": "0.4.2",
         "humanmade/coding-standards": "^0.8.0",

@@ -9,8 +9,8 @@ declare( strict_types=1 );
 
 namespace ProposeDraftDate;
 
-const ACCEPT_PROPOSAL_FILTER = 'proposed_date/should_accept_proposal';
-const SUPPORTED_POST_TYPES_FILTER = 'proposed_date/supported_post_types';
+const ACCEPT_PROPOSAL_FILTER = 'proposed_date.should_accept_proposal';
+const SUPPORTED_POST_TYPES_FILTER = 'proposed_date.supported_post_types';
 
 /**
  * Connect namespace functions to actions & hooks.

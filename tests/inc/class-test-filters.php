@@ -27,7 +27,7 @@ class Test_Filters extends WP_UnitTestCase {
 	 */
 	public function test_get_supported_post_types( array $expected, ?callable $filter_function ) : void {
 		if ( is_callable( $filter_function ) ) {
-			add_filter( 'proposed_date/supported_post_types', $filter_function );
+			add_filter( 'proposed_date.supported_post_types', $filter_function );
 		}
 
 		$this->assertEquals( $expected, ProposeDraftDate\get_supported_post_types() );

@@ -11,6 +11,7 @@ namespace ProposeDraftDate\Date_Display;
 
 use ProposeDraftDate;
 use ProposeDraftDate\Meta;
+use WP_Post;
 
 /**
  * Connect namespace functions to actions & hooks.

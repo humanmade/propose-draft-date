@@ -36,7 +36,7 @@ function maybe_return_meta_date( $date, string $format, $post ) {
 	if ( ! $post instanceof WP_Post ) {
 		$post = get_post( $post );
 	}
-	if ( ! ProposeDraftDate\is_post_type_supported( $post->post_type ) ) {
+	if ( ! $post instanceof WP_Post || ! ProposeDraftDate\is_post_type_supported( $post->post_type ) ) {
 		return $date;
 	}
 	$proposed_date = Meta\get_proposed_date( $post );

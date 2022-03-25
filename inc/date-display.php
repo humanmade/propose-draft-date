@@ -11,6 +11,7 @@ namespace ProposeDraftDate\Date_Display;
 
 use ProposeDraftDate;
 use ProposeDraftDate\Meta;
+use WP_Post;
 
 /**
  * Connect namespace functions to actions & hooks.
@@ -32,7 +33,10 @@ function setup() : void {
  * @return int|string Filtered post date.
  */
 function maybe_return_meta_date( $date, string $format, $post ) {
-	if ( ! ProposeDraftDate\is_post_type_supported( $post->post_type ) ) {
+	if ( ! $post instanceof WP_Post ) {
+		$post = get_post( $post );
+	}
+	if ( ! $post instanceof WP_Post || ! ProposeDraftDate\is_post_type_supported( $post->post_type ) ) {
 		return $date;
 	}
 	$proposed_date = Meta\get_proposed_date( $post );
